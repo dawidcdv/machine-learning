@@ -1,0 +1,8 @@
+name: warm-up
+dependencies:
+  - python=3.9
+  - seaborn
+  - pandas
+  - matplotlib
+  - flake8
+  - numpy
