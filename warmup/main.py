@@ -78,13 +78,13 @@ df4 = pd.DataFrame({'y4': y4}, x4)
 dfAll = pd.concat([df, df4])
 dfAllColIndex = dfAll.reset_index()
 
-N_ROWS = count_rows_number(dfAll, N_COLS)
-seaborn.set(rc={"figure.figsize": calculate_figsize(N_COLS, N_ROWS)})
+n_rows = count_rows_number(dfAll, N_COLS)
+seaborn.set(rc={"figure.figsize": calculate_figsize(N_COLS, n_rows)})
 
 
-fig, axs = plt.subplots(ncols=N_COLS, nrows=N_ROWS)
+fig, axs = plt.subplots(ncols=N_COLS, nrows=n_rows)
 for i in range(0, dfAll.columns.__len__()):
-    ax = get_ax(axs, i, N_COLS, N_ROWS)
+    ax = get_ax(axs, i, N_COLS, n_rows)
     seaborn.regplot(x='index', y=dfAll.columns[i], data=dfAllColIndex, ax=ax)
     ax.set(xlabel='X', xlim=calculate_xaxis_lim(dfAllColIndex['index']),
            ylim=calculate_yaxis_lim(dfAll))
