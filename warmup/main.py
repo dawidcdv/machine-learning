@@ -63,7 +63,7 @@ def create_dirs(dirs: list):
         os.makedirs(os.path.join(get_root_dir(), dir), exist_ok=True)
 
 
-def generate_absoulte_path(dir: str, filename: str) -> str:
+def absolute_path(dir: str, filename: str) -> str:
     return os.path.join(get_root_dir(), dir, filename)
 
 
@@ -92,13 +92,13 @@ n_rows = count_rows_number(dfAll, N_COLS)
 seaborn.set(rc={"figure.figsize": calculate_figsize(N_COLS, n_rows)})
 
 base_statistics(dfAll).round(2)\
-    .to_csv(generate_absoulte_path(CSV_DIR, 'statistics.csv'))
+    .to_csv(absolute_path(CSV_DIR, 'statistics.csv'))
 
 pearson_correlation(df).round(2)\
-    .to_csv(generate_absoulte_path(CSV_DIR, 'pearson.csv'))
+    .to_csv(absolute_path(CSV_DIR, 'pearson.csv'))
 
 plot(dfAll, N_COLS, n_rows)\
-    .savefig(generate_absoulte_path(PLOT_DIR, 'plots.jpg'))
+    .savefig(absolute_path(PLOT_DIR, 'plots.jpg'))
 
 # Simple alternative
 # plot = seaborn.pairplot(dfAllColIndex,x_vars='index',y_vars=dfAll.columns,
