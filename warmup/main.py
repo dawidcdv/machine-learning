@@ -2,6 +2,7 @@ import numpy
 import pandas as pd
 import seaborn
 import matplotlib.pyplot as plt
+import matplotlib
 import math
 import os
 from warmup.data import x, y1, y2, y3, y4, x4
@@ -67,7 +68,7 @@ def absolute_path(dir: str, filename: str) -> str:
     return os.path.join(get_root_dir(), dir, filename)
 
 
-def plot(df, ncols, nrows):
+def plot(df: pd.DataFrame, ncols: int, nrows: int) -> matplotlib.figure.Figure:
     fig, axs = plt.subplots(ncols=ncols, nrows=nrows)
     df_index = dfAll.reset_index()
     for i in range(0, df.columns.__len__()):
@@ -82,7 +83,6 @@ CSV_DIR = 'csv'
 PLOT_DIR = 'plot'
 N_COLS = 2
 create_dirs([CSV_DIR, PLOT_DIR])
-
 
 df = pd.DataFrame({'y1': y1, 'y2': y2, 'y3': y3}, x)
 df4 = pd.DataFrame({'y4': y4}, x4)
