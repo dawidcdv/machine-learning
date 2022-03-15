@@ -67,6 +67,17 @@ def generate_absoulte_path(dir: str, filename: str) -> str:
     return os.path.join(get_root_dir(), dir, filename)
 
 
+def plot(df, ncols, nrows):
+    fig, axs = plt.subplots(ncols=ncols, nrows=nrows)
+    df_index = dfAll.reset_index()
+    for i in range(0, df.columns.__len__()):
+        ax = get_ax(axs, i, N_COLS, n_rows)
+        seaborn.regplot(x='index', y=dfAll.columns[i], data=df_index, ax=ax)
+        ax.set(xlabel='X', xlim=calculate_xaxis_lim(df_index['index']),
+               ylim=calculate_yaxis_lim(df))
+    return fig
+
+
 CSV_DIR = 'csv'
 PLOT_DIR = 'plot'
 N_COLS = 2
@@ -76,18 +87,9 @@ create_dirs([CSV_DIR, PLOT_DIR])
 df = pd.DataFrame({'y1': y1, 'y2': y2, 'y3': y3}, x)
 df4 = pd.DataFrame({'y4': y4}, x4)
 dfAll = pd.concat([df, df4])
-dfAllColIndex = dfAll.reset_index()
 
 n_rows = count_rows_number(dfAll, N_COLS)
 seaborn.set(rc={"figure.figsize": calculate_figsize(N_COLS, n_rows)})
-
-
-fig, axs = plt.subplots(ncols=N_COLS, nrows=n_rows)
-for i in range(0, dfAll.columns.__len__()):
-    ax = get_ax(axs, i, N_COLS, n_rows)
-    seaborn.regplot(x='index', y=dfAll.columns[i], data=dfAllColIndex, ax=ax)
-    ax.set(xlabel='X', xlim=calculate_xaxis_lim(dfAllColIndex['index']),
-           ylim=calculate_yaxis_lim(dfAll))
 
 base_statistics(dfAll).round(2)\
     .to_csv(generate_absoulte_path(CSV_DIR, 'statistics.csv'))
@@ -95,7 +97,8 @@ base_statistics(dfAll).round(2)\
 pearson_correlation(df).round(2)\
     .to_csv(generate_absoulte_path(CSV_DIR, 'pearson.csv'))
 
-fig.savefig(generate_absoulte_path(PLOT_DIR, 'plots.jpg'))
+plot(dfAll, N_COLS, n_rows)\
+    .savefig(generate_absoulte_path(PLOT_DIR, 'plots.jpg'))
 
 # Simple alternative
 # plot = seaborn.pairplot(dfAllColIndex,x_vars='index',y_vars=dfAll.columns,
