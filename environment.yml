@@ -6,3 +6,4 @@ dependencies:
   - matplotlib
   - flake8
   - numpy
+  - scikit-learn
