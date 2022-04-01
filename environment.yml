@@ -7,3 +7,4 @@ dependencies:
   - flake8
   - numpy
   - scikit-learn
+  - scipy
