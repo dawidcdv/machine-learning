@@ -6,6 +6,7 @@ import matplotlib
 import math
 import os
 from warmup.data import x, y1, y2, y3, y4, x4
+from common.functions import file_dir, root_dir, absolute_path
 
 if __name__ != "__main__":
     exit(1)
@@ -55,17 +56,10 @@ def calculate_figsize(ncols: int, nrows: int) -> tuple:
     return (5 * ncols, 5 * nrows)
 
 
-def get_root_dir() -> str:
-    return os.path.dirname(os.path.realpath(__file__))
 
-
-def create_dirs(dirs: list):
+def create_dirs(dirs: list, root = root_dir()):
     for dir in dirs:
-        os.makedirs(os.path.join(get_root_dir(), dir), exist_ok=True)
-
-
-def absolute_path(dir: str, filename: str) -> str:
-    return os.path.join(get_root_dir(), dir, filename)
+        os.makedirs(os.path.join(root, dir), exist_ok=True)
 
 
 def plot(df: pd.DataFrame, ncols: int, nrows: int) -> matplotlib.figure.Figure:
@@ -82,7 +76,8 @@ def plot(df: pd.DataFrame, ncols: int, nrows: int) -> matplotlib.figure.Figure:
 CSV_DIR = 'csv'
 PLOT_DIR = 'plot'
 N_COLS = 2
-create_dirs([CSV_DIR, PLOT_DIR])
+FILE_DIR = file_dir(__file__)
+create_dirs([CSV_DIR, PLOT_DIR], root=file_dir(__file__))
 
 df = pd.DataFrame({'y1': y1, 'y2': y2, 'y3': y3}, x)
 df4 = pd.DataFrame({'y4': y4}, x4)
@@ -92,13 +87,13 @@ n_rows = count_rows_number(dfAll, N_COLS)
 seaborn.set(rc={"figure.figsize": calculate_figsize(N_COLS, n_rows)})
 
 base_statistics(dfAll).round(2)\
-    .to_csv(absolute_path(CSV_DIR, 'statistics.csv'))
+    .to_csv(absolute_path(CSV_DIR, 'statistics.csv', root=FILE_DIR))
 
 pearson_correlation(df).round(2)\
-    .to_csv(absolute_path(CSV_DIR, 'pearson.csv'))
+    .to_csv(absolute_path(CSV_DIR, 'pearson.csv', root=FILE_DIR))
 
-plot(dfAll, N_COLS, n_rows)\
-    .savefig(absolute_path(PLOT_DIR, 'plots.jpg'))
+plot(df4, N_COLS, n_rows)\
+    .savefig(absolute_path(PLOT_DIR, 'plots.jpg', root=FILE_DIR))
 
 # Simple alternative
 # plot = seaborn.pairplot(dfAllColIndex,x_vars='index',y_vars=dfAll.columns,
