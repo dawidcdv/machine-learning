@@ -25,14 +25,14 @@ def mae(df : pd.DataFrame, x_cols : list, y_col : str) -> float:
     return score_dataset(X_train, X_test, y_train, y_test)
 
 
-def fit_transform(df,imputer) -> pd.DataFrame:
+def fit_transform(df : pd.DataFrame, imputer : _BaseImputer) -> pd.DataFrame:
     nan_cols = df.columns[df.isna().any()].tolist()
     df_imputer = df
     df_imputer[nan_cols] = imputer.fit_transform(df[nan_cols])
     return df_imputer
 
 
-def get_inputer(strategy='KNN') -> _BaseImputer:
+def get_imputer(strategy : str = 'KNN') -> _BaseImputer:
     if strategy.upper() != 'KNN':
         return SimpleImputer(missing_values=np.nan, strategy=strategy)
     else :
@@ -43,17 +43,17 @@ def root_dir() -> str:
     return Path(__file__).parent.parent
 
 
-def file_dir(file):
+def file_dir(file : str) -> str:
     return os.path.dirname(os.path.abspath(file))
 
 
-def absolute_path(*paths, root = root_dir()) -> str:
+def absolute_path(*paths : list, root : dict = root_dir()) -> str:
     return os.path.join(root, *paths)
 
 
-def load_data(filename = absolute_path('common', 'houses_data.csv'), config={}):
+def load_data(filename : str = absolute_path('common', 'houses_data.csv') , config: dict = {}) -> str:
     return pd.read_csv(filename, **config)
 
 
-def nan_strategy_methods():
+def nan_strategy_methods() -> list:
     return ['mean','median','most_frequent', 'KNN']
