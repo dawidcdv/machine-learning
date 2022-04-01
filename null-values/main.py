@@ -10,11 +10,11 @@ def count_nan(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def percent_nan(df : pd.DataFrame) -> pd.Series:
-    nanCnt = count_nan(df)
-    percentDf = pd.Series(dtype='float64')
-    for column in nanCnt.index:
-        percentDf[column] = 100 * nanCnt[column]/df.count().max()
-    return percentDf.round(2)
+    nan_cnt = count_nan(df)
+    percent_df = pd.Series(dtype='float64')
+    for column in nan_cnt.index:
+        percent_df[column] = 100 * nan_cnt[column]/df.count().max()
+    return percent_df.round(2)
 
 
 def get_col_config() -> dict:
@@ -45,4 +45,3 @@ print("\nPearson", pearson)
 
 df_wihout_nan = fit_transform(df, get_imputer(nan_strategy))
 print("\nMae", mae(df_wihout_nan, ['Car', 'Bathroom', 'Bedroom2'], 'Price'))
-
