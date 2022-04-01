@@ -4,7 +4,7 @@ import sys
 from common.functions import mae, fit_transform, get_imputer, load_data, nan_strategy_methods
 
 
-def count_nan(df : pd.DataFrame) -> pd.DataFrame:
+def count_nan(df: pd.DataFrame) -> pd.DataFrame:
     return df.isna().sum().loc[lambda x : x > 0]
 
 
@@ -18,13 +18,12 @@ def percent_nan(df : pd.DataFrame) -> pd.Series:
 
 def get_col_config() -> dict:
     return {
-        'dtype' : {
+        'dtype': {
             'BuildingArea': np.float64,
             'Rooms': np.int8,
             'Price': np.float64,
             'YearBuilt': np.float64
-        },
-        'usecols' : ['Rooms', 'Car', 'BuildingArea', 'CouncilArea', 'YearBuilt', 'Price']
+        }
     }
 
 
@@ -39,7 +38,9 @@ nan = percent_nan(all_df)
 print("Procent nan\n", nan)
 
 df = load_data(config=get_col_config()).select_dtypes(include=np.number)
+
 pearson = df.corr(method='pearson')['Price']
+print("Pearson", pearson)
 
 df_wihout_nan = fit_transform(df, get_imputer(nan_strategy))
 print("\nMae", mae(df_wihout_nan, ['Car', 'BuildingArea', 'YearBuilt'], 'Price'))
